@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour {
     Rigidbody rocketRigidbody;
+    AudioSource audioSource;
     [SerializeField] float mainThrust = 750f;
     [SerializeField] float rotationalThrust = 50f;
 
     void Start() {
         rocketRigidbody = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -39,6 +41,12 @@ public class Movement : MonoBehaviour {
         if (Input.GetKey(KeyCode.Space)) {
             Vector3 force = Vector3.up * mainThrust * Time.deltaTime;
             rocketRigidbody.AddRelativeForce(force);
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Space)) {
+            audioSource.Stop();
         }
     }
 }
